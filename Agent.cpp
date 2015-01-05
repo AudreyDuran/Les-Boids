@@ -32,22 +32,47 @@
 // ===========================================================================
 
 
-const double Agent::XMAX = 640;
-const double Agent::YMAX = 480;
+/*const double Agent::XMAX = 640;
+const double Agent::YMAX = 480;*/
+
+const double Agent::R = 2;
 
 // ===========================================================================
 //                                  Constructors
 // ===========================================================================
 
-/* create an Agent with a random positon and a null velocity */
+/* create an Agent at the position (0,0) and a null velocity */
 Agent::Agent(void)
 {
 	
-	x = (double)(rand()/(double)RAND_MAX)*XMAX;
-	y = (double)(rand()/(double)RAND_MAX)*YMAX;
+	x = 0;
+	y = 0;
 
 	vx = 0;
 	vy = 0;
+
+	nextX = 0;
+	nextY = 0;
+
+	nextVx = 0;
+	nextVy = 0;
+
+}
+
+/* create an Agent with a random positon and a null velocity */
+Agent::Agent(double W, double H)
+{
+	x = (double)(rand()/(double)RAND_MAX)*W;
+	y = (double)(rand()/(double)RAND_MAX)*H;
+
+	vx = 0;
+	vy = 0;
+
+	nextX = 0;
+	nextY = 0;
+
+	nextVx = 0;
+	nextVy = 0;
 
 }
 
@@ -63,6 +88,11 @@ Agent::~Agent(void)
 // ===========================================================================
 //                                 Public Methods
 // ===========================================================================
+
+
+//-----------------------------------------------------------------------------
+//                                  Getters
+//-----------------------------------------------------------------------------
 
 
 double Agent::getx() 
@@ -86,6 +116,85 @@ double Agent::getVy()
 {
 	return vy;
 }
+
+//----------------------------------------------------------------------------
+//                                nextPosition
+//----------------------------------------------------------------------------
+
+
+
+
+void Agent::nextPosition()
+{
+
+}
+
+
+//---------------------------------------------------------------------------
+//                              isCloserThan
+//---------------------------------------------------------------------------
+
+/*Agent* Agent::isCloserThan(Agent* ag, double distance)
+{
+
+}*/
+
+//----------------------------------------------------------------------------
+//                                   v1
+//----------------------------------------------------------------------------
+
+double* Agent::v1(Agent* ag, int nbPop)
+{
+	double* v1 = new double[2];
+	int K = 0;   // number of agent who are in the radius of perception
+/*
+	for (int i = 0; i< nbPop; i++)
+	{
+		if( sqrt( v1[i].getx() * v1[i].getx() + v1[i].gety()*v1[i].gety() - this.getx()*this.getx() - this.gety() * this.gety()) < R)
+		{
+			K += 1;
+
+		}
+
+	}
+
+
+
+	v1[0] = 1/nbPop * ()
+
+	
+
+		
+
+	}
+	*/
+
+	
+	return v1;
+}
+
+//----------------------------------------------------------------------------
+//                                   v2
+//----------------------------------------------------------------------------
+
+double* Agent::v2(Agent* ag, int nbPop)
+{
+	double* v2 = 0;
+	return v2;
+	
+}
+
+//----------------------------------------------------------------------------
+//                                   v3
+//----------------------------------------------------------------------------
+
+double* Agent::v3(Agent* ag, int nbPop)
+{
+	double* v3 = 0;
+	return v3;
+
+}
+	
 
 
 // ===========================================================================

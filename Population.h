@@ -23,6 +23,7 @@
 // ===========================================================================
 
 #include "Agent.h"
+#include "bwindow.h"
 
 
 // ===========================================================================
@@ -70,6 +71,8 @@ class Population
     // =======================================================================
 
     void add(Agent a);
+    void run();
+    void speed();    // calculate the new velocity and set vx, vy, nextVx, nextVy
 
     // =======================================================================
     //                             Public Attributes
@@ -104,8 +107,18 @@ class Population
     //                             Protected Attributes
     // =======================================================================
 
-    Agent* ag;
+    static const size_t MAX_POP;
+    Agent* ag;   // table wich contains the Agents
     int nbPop;
+
+    double W;   // weight of the window
+    double H;   // height of the window
+
+    double DT;  // time interval
+
+    double g1;  // gamma 1 
+    double g2;  // gamma 2
+    double g3;  // gamma 3
 
 };
 

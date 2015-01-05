@@ -25,7 +25,6 @@
 
 
 
-
 // ===========================================================================
 //                              Class declarations
 // ===========================================================================
@@ -47,6 +46,7 @@ class Agent
     //                               Constructors
     // =======================================================================
     Agent(void);
+    Agent(double W, double H);
 
     // =======================================================================
     //                                Destructor
@@ -61,6 +61,7 @@ class Agent
     double gety();  // get the position y of the Agent
     double getVx(); // get the velocity on the x line of the Agent
     double getVy(); // get the velocity on the y line of the Agent
+
    
 
 
@@ -76,12 +77,18 @@ class Agent
     //                              Public Methods
     // =======================================================================
 
-     Agent(const Agent &model)
+     /*Agent(const Agent &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
-    };
+    };*/
 
+    void nextPosition();
+    double* v1(Agent* ag, int nbPop);
+    double* v2(Agent* ag, int nbPop);
+    double* v3(Agent* ag, int nbPop); 
+    Agent* isCloserThan(double distance);
+    
     
     // =======================================================================
     //                             Public Attributes
@@ -115,11 +122,23 @@ class Agent
     static const double XMAX;  // max position on the x line (because of the size of the window)
     static const double YMAX;  //max position on the y line
 
+    static const double R; // radius of perception
+
+    
+
     double x;  // position of the Agent on the x line
     double y;  // position of the Agent on the y line
 
     double vx;    // coordinate x of the velocity vector
     double vy;    // coordinate y of the velocity vector
+
+    double nextX; // next position of the Agent on the x line
+    double nextY; // next position of the Agent on the x line
+
+    double nextVx; // coordinate x of the next velocity vector
+    double nextVy; // coordinate y of the next velocity vector
+
+       
 
 };
 
