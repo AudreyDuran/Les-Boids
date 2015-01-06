@@ -76,6 +76,23 @@ Agent::Agent(double W, double H)
 
 }
 
+/*create an Agent with a given position*/
+Agent::Agent(double X, double Y, double W, double H)
+{
+	x = X;
+	y = Y;
+
+	vx = 0;
+	vy = 0;
+
+	nextX = 0;
+	nextY = 0;
+
+	nextVx = 0;
+	nextVy = 0;
+
+}
+
 
 
 // ===========================================================================
@@ -134,10 +151,22 @@ void Agent::nextPosition()
 //                              isCloserThan
 //---------------------------------------------------------------------------
 
-/*Agent* Agent::isCloserThan(Agent* ag, double distance)
-{
 
-}*/
+bool Agent::isClosedTo(Agent ag, double distance)
+{
+	bool close = false;
+	double norm = 0; //distance between the two agents
+
+	norm = sqrt( (x-ag.getx())* (x-ag.getx()) + (y-ag.gety())*(y-ag.gety()) );
+	
+	if( norm < distance)
+	{
+		close = true;
+	}
+	
+
+	return close;
+}
 
 //----------------------------------------------------------------------------
 //                                   v1
@@ -146,28 +175,16 @@ void Agent::nextPosition()
 double* Agent::v1(Agent* ag, int nbPop)
 {
 	double* v1 = new double[2];
-	int K = 0;   // number of agent who are in the radius of perception
-/*
-	for (int i = 0; i< nbPop; i++)
-	{
-		if( sqrt( v1[i].getx() * v1[i].getx() + v1[i].gety()*v1[i].gety() - this.getx()*this.getx() - this.gety() * this.gety()) < R)
-		{
-			K += 1;
-
-		}
-
-	}
+	
 
 
 
-	v1[0] = 1/nbPop * ()
+
+	//v1[0] = 1/nbPop * ()
 
 	
 
 		
-
-	}
-	*/
 
 	
 	return v1;

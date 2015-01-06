@@ -16,6 +16,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
 
 
@@ -47,6 +48,7 @@ class Agent
     // =======================================================================
     Agent(void);
     Agent(double W, double H);
+    Agent(double X, double Y, double W, double H);
 
     // =======================================================================
     //                                Destructor
@@ -87,7 +89,7 @@ class Agent
     double* v1(Agent* ag, int nbPop);
     double* v2(Agent* ag, int nbPop);
     double* v3(Agent* ag, int nbPop); 
-    Agent* isCloserThan(double distance);
+    bool isClosedTo(Agent ag, double distance);
     
     
     // =======================================================================
@@ -137,6 +139,7 @@ class Agent
 
     double nextVx; // coordinate x of the next velocity vector
     double nextVy; // coordinate y of the next velocity vector
+
 
        
 
