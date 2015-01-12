@@ -14,11 +14,11 @@ int main()
     printf("x=%lf y=%lf vx=%lf \n", test.getx(), test.gety(), test.getVx());
 
     //Test for Agent's constructor with 6 parameters
-    printf("\n\nAGENT : constructor Agent(double X, double Y, double Vx, double Vy,double W, double H)\n");
-    Agent test2 = Agent(0,1, 1,1,100,100);
+    printf("\n\nAGENT : constructor Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt)\n");
+    Agent test2 = Agent(0,1, 1,1,100,100,1);
     printf("x=%lf y=%lf vx=%lf \n", test2.getx(), test2.gety(), test2.getVx());
 
-    Agent test3 = Agent(5,5,1,0,100,100);
+    Agent test3 = Agent(5,5,1,0,100,100,1);
 
 
     // Test for Population's default constructor
@@ -62,6 +62,16 @@ int main()
    printf("\n\nAGENT : v3 (tested on the Agent (1) test)\n");
    test.v3(pop.getAg(),pop.getNbPop());
 
+   //Test for Agent::setVx()
+   printf("\n\nAGENT : setVx\n");
+   test.setVx(10);
+   printf("vx = %lf\n", test.getVx() );
+
+   //Test for Population::speed()
+   printf("\n\nPOPULATION : speed\n");
+   pop.print();
+   pop.speed();
+   pop.print();
 
 	//Test Population::run
     printf("\n\nPOPULATION : run\n");

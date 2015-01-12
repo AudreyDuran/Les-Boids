@@ -58,6 +58,8 @@ Agent::Agent(void)
 	nextVx = 0;
 	nextVy = 0;
 
+	DT = 1;
+
 }
 
 /* create an Agent with a random positon and a null velocity */
@@ -66,19 +68,21 @@ Agent::Agent(double W, double H)
 	x = (double)(rand()/(double)RAND_MAX)*W;
 	y = (double)(rand()/(double)RAND_MAX)*H;
 
-	vx = 0;
-	vy = 0;
+	vx = 1;
+	vy = 1;
 
 	nextX = 0;
 	nextY = 0;
 
-	nextVx = 0;
-	nextVy = 0;
+	nextVx = 1;
+	nextVy = 1;
+
+	DT = 1;
 
 }
 
 /*create an Agent with a given position and a given velocity*/
-Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H)
+Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt)
 {
 	x = X;
 	y = Y;
@@ -89,8 +93,10 @@ Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H)
 	nextX = 0;
 	nextY = 0;
 
-	nextVx = 0;
-	nextVy = 0;
+	nextVx = Vx;
+	nextVy = Vy;
+
+	DT = dt;
 
 }
 
@@ -149,6 +155,11 @@ double Agent::getNextvy()
 	return nextVy;
 }
 
+double Agent::getDT()
+{
+	return DT;
+}
+
 //-----------------------------------------------------------------------------
 //                                  Setters
 //-----------------------------------------------------------------------------
@@ -184,8 +195,38 @@ void Agent::setNextvy(double v)
 
 
 
-void Agent::nextPosition()
+void Agent::newPosition()
 {
+	x = nextX;
+	y = nextY;
+
+	double nx = x + DT * vx;
+	double ny = y + DT * vy;
+
+	if(0<nx<640 && 0<ny<480)
+	{
+		nextX = nx;
+		nextY = ny;
+	}
+
+	else if(0<ny<480)
+	{
+		nextX = x + DT * (-vx);
+		nextY = y + DT * vy;
+	}
+
+	else if(0<nx<640)
+	{
+		nextY = y + DT * (-vy);
+		nextX = x + DT * vx;
+	}
+
+	else
+	{
+		nextX = x + DT * (-vx);
+		nextY = y + DT * (-vy);
+	}
+	
 
 }
 
@@ -218,6 +259,8 @@ bool Agent::isClosedTo(Agent ag, double distance)
 
 double* Agent::v1(Agent* ag, int nbPop)
 {
+	printf("\nDébut du calcul de v1 pour cet Agent\n");
+	
 	double* v1 = new double[2];
 	v1[0] = 0;
 	v1[1] = 0;
@@ -237,11 +280,16 @@ double* Agent::v1(Agent* ag, int nbPop)
 		}
 	}
 	
+	if(K!=0)
+	{
+		v1[0] = (double)1/K* (double)v1[0];
+	    v1[1] = (double)1/K * (double)v1[1];
 
-	v1[0] = (double)1/K* (double)v1[0];
-	v1[1] = (double)1/K * (double)v1[1];
+	}
 
 	printf("fin : v1[0]= %lf v1[1]=%lf\n",v1[0],v1[1]);
+
+	printf("Fin du calcul de v1 pour cet Agent\n\n");
 	
 	return v1;
 }
@@ -252,6 +300,8 @@ double* Agent::v1(Agent* ag, int nbPop)
 
 double* Agent::v2(Agent* ag, int nbPop)
 {
+	printf("\nDébut du calcul de v2 pour cet Agent\n");
+	
 	double* v2 = new double[2];
 
 	v2[0] = 0;
@@ -272,11 +322,16 @@ double* Agent::v2(Agent* ag, int nbPop)
 		}
 	}
 	
-
-	v2[0] = (double)1/K* (double)v2[0];
-	v2[1] = (double)1/K * (double)v2[1];
+	if(K!=0)
+	{
+		v2[0] = (double)1/K * (double)v2[0];
+	    v2[1] = (double)1/K * (double)v2[1];
+	}
+	
 
 	printf("fin : v2[0]= %lf v2[1]=%lf\n",v2[0],v2[1]);
+
+	printf("Fin du calcul de v2 pour cet Agent\n\n");
 	
 
 	return v2;
@@ -289,6 +344,8 @@ double* Agent::v2(Agent* ag, int nbPop)
 
 double* Agent::v3(Agent* ag, int nbPop)
 {
+	printf("\nDébut du calcul de v3 pour cet Agent\n");
+
 	double* v3 = new double[2];
 
 	int K2 = 0;  //number of Agents closed to the considerated Agent
@@ -300,7 +357,7 @@ double* Agent::v3(Agent* ag, int nbPop)
 		if(this->isClosedTo(ag[i],c) == true)
 		{
 			K2 = K2 + 1;
-				printf("K2=%d i=%d\n",K2,i);
+		    printf("K2=%d i=%d\n",K2,i);
 
 			v3 [0] = v3[0] + ag[i].getx() - this->getx();
 			v3 [1] = v3[1] + ag[i].gety() - this->gety();
@@ -308,10 +365,19 @@ double* Agent::v3(Agent* ag, int nbPop)
 		}
 	}
 
-	v3[0] = (double)-1/K2* (double)v3[0];
-	v3[1] = (double)-1/K2* (double)v3[1];
+	if(K2!=0)
+	{
+		v3[0] = (double)1/K2 * (double)v3[0] * (-1);
+	    v3[1] = (double)1/K2 * (double)v3[1]*(-1);
+
+	}
+	
+
+	printf("v3[0] = %lf v3[1]=%lf\n",v3[0],v3[1]);
 
    //now we can focus on the second part of the expression of v3
+
+	printf("Fin du calcul de v3 pour cet Agent\n\n");
 
 	return v3;
 

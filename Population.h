@@ -47,6 +47,7 @@ class Population
     //                               Constructors
     // =======================================================================
     Population(void);
+    Population(double w, double h, double g1, double g2, double g3);
 
     // =======================================================================
     //                                Destructor
@@ -77,6 +78,7 @@ class Population
     void speed();    // calculate the new velocity and set vx, vy, nextVx, nextVy
     void print();    //print informations about the Population (nbPop, MAX_POP, vx and vy of the Agent..)
     
+
     // =======================================================================
     //                             Public Attributes
     // =======================================================================
@@ -117,11 +119,11 @@ class Population
     double W;   // weight of the window
     double H;   // height of the window
 
-    double DT;  // time interval
+    
 
-    double g1;  // gamma 1 
-    double g2;  // gamma 2
-    double g3;  // gamma 3
+    double G1;  // gamma 1 
+    double G2;  // gamma 2
+    double G3;  // gamma 3
 
 };
 

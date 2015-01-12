@@ -48,7 +48,7 @@ class Agent
     // =======================================================================
     Agent(void);
     Agent(double W, double H);
-    Agent(double X, double Y, double Vx, double Vy,double W, double H);
+    Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt);
 
     // =======================================================================
     //                                Destructor
@@ -65,6 +65,7 @@ class Agent
     double getVy(); // get the velocity on the y line of the Agent
     double getNextvx(); // get the next velocity on the x line of the Agent
     double getNextvy(); // get the next velocity on the y line of the Agent
+    double getDT();
     void print(); //print informations about the Agent (attributes)
    
 
@@ -91,7 +92,7 @@ class Agent
       exit(EXIT_FAILURE);
     };*/
 
-    void nextPosition();
+    void newPosition();
     double* v1(Agent* ag, int nbPop);
     double* v2(Agent* ag, int nbPop);
     double* v3(Agent* ag, int nbPop); 
@@ -147,7 +148,7 @@ class Agent
     double nextVx; // coordinate x of the next velocity vector
     double nextVy; // coordinate y of the next velocity vector
 
-
+    double DT;  // time interval
        
 
 };
