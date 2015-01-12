@@ -48,7 +48,7 @@ class Agent
     // =======================================================================
     Agent(void);
     Agent(double W, double H);
-    Agent(double X, double Y, double W, double H);
+    Agent(double X, double Y, double Vx, double Vy,double W, double H);
 
     // =======================================================================
     //                                Destructor
@@ -63,7 +63,7 @@ class Agent
     double gety();  // get the position y of the Agent
     double getVx(); // get the velocity on the x line of the Agent
     double getVy(); // get the velocity on the y line of the Agent
-
+    void print(); //print informations about the Agent (attributes)
    
 
 
@@ -125,6 +125,7 @@ class Agent
     static const double YMAX;  //max position on the y line
 
     static const double R; // radius of perception
+    static const double c; //contact distance
 
     
 
