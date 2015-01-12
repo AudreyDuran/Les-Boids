@@ -1,15 +1,7 @@
-<<<<<<< HEAD
 #ifndef __BWINDOW_H__
 #define __BWINDOW_H__
 
 
-
-=======
-
-#ifndef __BWINDOW_H__
-#define __BWINDOW_H__
-
->>>>>>> 8fb4c6a22a11f52a0469e57f797b2cf3bdc4424c
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
@@ -101,8 +93,5 @@ class bwindow
 
 };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 8fb4c6a22a11f52a0469e57f797b2cf3bdc4424c
 #endif // __BWINDOW_H__
