@@ -58,6 +58,8 @@ class Population
     // =======================================================================
 
     int getNbPop();
+    Agent* getAg();
+
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
@@ -73,7 +75,8 @@ class Population
     void add(Agent a);
     void run();
     void speed();    // calculate the new velocity and set vx, vy, nextVx, nextVy
-
+    void print();    //print informations about the Population (nbPop, MAX_POP, vx and vy of the Agent..)
+    
     // =======================================================================
     //                             Public Attributes
     // =======================================================================
