@@ -136,6 +136,19 @@ double Agent::getVy()
 	return vy;
 }
 
+
+// get the next velocity on the x line of the Agent
+ double Agent::getNextvx()
+ {
+ 	return nextVx;
+ }
+
+// get the next velocity on the y line of the Agent
+double Agent::getNextvy()
+{
+	return nextVy;
+}
+
 //-----------------------------------------------------------------------------
 //                                  Setters
 //-----------------------------------------------------------------------------
@@ -152,6 +165,16 @@ void Agent::setVy(double v)
 {
 	vy = v;
 
+}
+
+void Agent::setNextvx(double v)
+{
+	nextVx = v;
+}
+
+void Agent::setNextvy(double v)
+{
+	nextVy = v;
 }
 
 //----------------------------------------------------------------------------

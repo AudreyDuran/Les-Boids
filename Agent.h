@@ -63,9 +63,10 @@ class Agent
     double gety();  // get the position y of the Agent
     double getVx(); // get the velocity on the x line of the Agent
     double getVy(); // get the velocity on the y line of the Agent
+    double getNextvx(); // get the next velocity on the x line of the Agent
+    double getNextvy(); // get the next velocity on the y line of the Agent
     void print(); //print informations about the Agent (attributes)
    
-
 
     // =======================================================================
     //                            Accessors: setters
@@ -73,7 +74,9 @@ class Agent
 
     void setVx(double v);
     void setVy(double v);
-    
+    void setNextvx(double v);
+    void setNextvy(double v);
+
     // =======================================================================
     //                                Operators
     // =======================================================================
