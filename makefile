@@ -1,8 +1,8 @@
 
 all: test.out
 
-test.out: main.o bwindow.o Agent.o Population.o
-	g++ -o test.out main.o Agent.o Population.o bwindow.o -lX11 -L/usr/X11R6/lib
+test.out: main.o bwindow.o Agent.o Population.o Obstacle.o
+	g++ -o test.out main.o Agent.o Population.o Obstacle.o bwindow.o -lX11 -L/usr/X11R6/lib
 
 main.o: main.cpp
 	g++ -c main.cpp 
@@ -15,6 +15,9 @@ Agent.o: Agent.cpp Agent.h
 
 Population.o: Population.cpp Population.h
 	g++ -c Population.cpp
+
+Obstacle.o: Obstacle.cpp Obstacle.h
+	g++ -c Obstacle.cpp
 	
 clean:
 	rm *.o *.out
