@@ -87,6 +87,10 @@ Agent* Population::getAg()
 	return ag;
 }
 
+Agent Population::getAg(int pos)
+{
+	return ag[pos];
+}
 
 //-----------------------------------------------------------------------------
 //                                   add
@@ -142,7 +146,7 @@ void Population::run()
     for(;;)  // infinite loop for(;;)
     {
 		int ev = win.parse_event();
-		usleep(100000); 
+		usleep(1000); 
 		switch(ev)
 		{
 	  	  case BKPRESS :
@@ -161,11 +165,15 @@ void Population::run()
 		//win.draw_line(100,100,200,200,0xFF0000);
 		//win.draw_text(10,10,0x0,"Yo men",strlen("Yo men"));     //text
 
+
+		win.draw_fsquare(0, 0, 640, 480, 0xFEFEFE);
 		for(int i=0; i<nbPop; i++)
 		{
+			ag[i].setX(ag[i].getx()+1);
 			win.draw_fsquare(ag[i].getx(),ag[i].gety(),ag[i].getx() + 10 ,ag[i].gety() + 10,0xFF0000); //full square
-			ag[i].newPosition();
-			this->speed();
+			//ag[i].newPosition();
+			//this->speed();
+			usleep(1000); 
 
 		}
 		//win.draw_square(200,200,220,220,0xFF00);   //square

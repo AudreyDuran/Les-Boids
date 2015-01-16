@@ -73,6 +73,7 @@ class Agent
     //                            Accessors: setters
     // =======================================================================
 
+    void setX(double px);  // pour test
     void setVx(double v);
     void setVy(double v);
     void setNextvx(double v);

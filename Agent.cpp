@@ -65,14 +65,15 @@ Agent::Agent(void)
 /* create an Agent with a random positon and a null velocity */
 Agent::Agent(double W, double H)
 {
+
 	x = (double)(rand()/(double)RAND_MAX)*W;
 	y = (double)(rand()/(double)RAND_MAX)*H;
 
 	vx = 1;
 	vy = 1;
 
-	nextX = 0;
-	nextY = 0;
+	nextX = x;
+	nextY = y;
 
 	nextVx = 1;
 	nextVy = 1;
@@ -90,8 +91,8 @@ Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H, double
 	vx = Vx;
 	vy = Vy;
 
-	nextX = 0;
-	nextY = 0;
+	nextX = X;
+	nextY = Y;
 
 	nextVx = Vx;
 	nextVy = Vy;
@@ -164,6 +165,10 @@ double Agent::getDT()
 //                                  Setters
 //-----------------------------------------------------------------------------
 
+void Agent::setX(double px)
+{
+	x = px;
+}
 
 void Agent::setVx(double v)
 {
@@ -197,34 +202,43 @@ void Agent::setNextvy(double v)
 
 void Agent::newPosition()
 {
+
 	x = nextX;
 	y = nextY;
-
+	
 	double nx = x + DT * vx;
+	printf("nx=%lf\n",nx );
 	double ny = y + DT * vy;
+	printf("ny=%lf\n",ny );
 
-	if(0<nx<640 && 0<ny<480)
+
+	if((nx<640) && (ny<480))
 	{
-		nextX = nx;
+		nextX = 42;
 		nextY = ny;
+		printf("1ère boucle\n");
 	}
 
-	else if(0<ny<480)
+	else if(ny<480)
 	{
 		nextX = x + DT * (-vx);
 		nextY = y + DT * vy;
+		printf("2ème boucle\n");
+
 	}
 
-	else if(0<nx<640)
+	else if(nx<640)
 	{
 		nextY = y + DT * (-vy);
 		nextX = x + DT * vx;
+		printf("3ème boucle\n");
 	}
 
 	else
 	{
 		nextX = x + DT * (-vx);
 		nextY = y + DT * (-vy);
+		printf("4ème boucle\n");
 	}
 	
 

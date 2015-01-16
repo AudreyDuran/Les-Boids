@@ -73,12 +73,44 @@ int main()
    pop.speed();
    pop.print();
 
+   //Test for Agent::newPosition()
+    printf("\n\nAGENT : newPosition\n");
+    Agent test4 = Agent(639,20,1,1,640,480,1);
+    test4.print();
+    test4.newPosition();
+    test4.print();
+    //test4.newPosition();
+    //test4.print();
+    
+    
+
 	//Test Population::run
     printf("\n\nPOPULATION : run\n");
-    pop.run();
+    Population popu;
+
+    Agent test5 = Agent(640,480);
+    Agent test6 = Agent(640,480);
+    Agent test7 = Agent(640,480);
+
+    popu.add(test5);
+    popu.add(test6);
+    popu.add(test7);
+
+    popu.print();
+
+    for(int i =0; i<popu.getNbPop();i++)
+    {
+      (popu.getAg(i)).newPosition();
+    }
+    popu.print();
+
+
+
+    //popu.run();
 
 
     
+//faire méthode qui créé une pop de taille donnée
 
     return 0;
 }
