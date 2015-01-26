@@ -190,6 +190,22 @@ void Population::speed()
 		pr[i].setVx(pr[i].getNextvx());
 		pr[i].setVy(pr[i].getNextvy());
 
+		double norm = sqrt(pr[i].getVx()*pr[i].getVx()+pr[i].getVy()*pr[i].getVy());
+
+		if(pr[i].getattack() == false && norm>5)
+ 		{
+ 			double max = norm/5;
+ 			pr[i].setVx((pr[i].getVx())/max);
+ 			pr[i].setVy((pr[i].getVy())/max);
+
+ 		}
+ 		else if(norm>10)
+ 		{
+ 			double max = norm/5;
+ 			pr[i].setVx((pr[i].getVx())/max);
+ 			pr[i].setVy((pr[i].getVy())/max);
+ 		}
+
 		//pr[i].setNextvx(pr[i].getVx() + DT*(double)(rand()/(double)RAND_MAX)*(5)-5);
 		//pr[i].setNextvx(pr[i].getVy() + DT*(double)(rand()/(double)RAND_MAX)*(5)-5);
 
@@ -199,26 +215,21 @@ void Population::speed()
 		//pr[i].setNextvy(pr[i].getVy() + DT * -(1) *pr[i].v4(ag, nbPop, Rp)[1]);
 
 		//we actualize nextvx and nextvy
-		if(pr[i].getattack() == false)
-		{
+		printf("ATTACK = %d\n", pr[i].getattack() );
+		//if(pr[i].getattack() == false)
+		//{
 			pr[i].move(ag, nbPop,50);
 			//pr[i].setNextvx(pr[i].getVx() + DT *pr[i].move(ag, nbPop, 20)[0]);
 			//pr[i].setNextvy(pr[i].getVy() + DT *pr[i].move(ag, nbPop, 20)[1]);
-		}
+		
+		//}
+
 		/*else
 		{
 			pr[i].hunting(ag);
 		}*/
 
-		double norm = sqrt(pr[i].getVx()*pr[i].getVx()+pr[i].getVy()*pr[i].getVy());
-
-		if(norm>5)
- 			{
- 				double max = norm/5;
- 				pr[i].setVx((pr[i].getVx())/max);
- 				pr[i].setVy((pr[i].getVy())/max);
-
- 			}
+		
 
 	}
 
@@ -280,6 +291,8 @@ void Population::run()
 			{
     			// we draw the Prey
 				win.draw_fsquare(ag[i].getx(),ag[i].gety(),ag[i].getx() + 3 ,ag[i].gety() + 3,0xE73E01);
+
+				
 				// we update his position (with the wind)
 				ag[i].newPosition();
 			}
@@ -289,16 +302,19 @@ void Population::run()
 		
 	
 
-		// we look over the table of Predator
+		// we browse the table of Predator
 		for(int i=0; i<nbPred; i++)
 		{ 
 			//we print the Predator
 			win.draw_fsquare(pr[i].getx(),pr[i].gety(),pr[i].getx() + 10 ,pr[i].gety() + 10,0x26C4EC);	
+
+			if(pr[i].getpreyPos()!=-1)
+			{
+				win.draw_fsquare(ag[pr[i].getpreyPos()].getx(),ag[pr[i].getpreyPos()].gety(),ag[pr[i].getpreyPos()].getx() + 8 ,ag[pr[i].getpreyPos()].gety() + 8,0xCDCD0D);
+			}
 			
 			//we update his position (with the wind)
 			pr[i].newPosition();
-			printf("Predator\n");
-			pr[i].print();
 			//if(pr[i].isClosedTo())
 		}
 		//we update the speed of all the Population (Prey and Predator)

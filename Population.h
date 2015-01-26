@@ -62,6 +62,11 @@ class Population
 
     int getNbPop();
     Agent* getAg();
+
+
+
+
+
     Agent* getAg(int pos);
 
     // =======================================================================

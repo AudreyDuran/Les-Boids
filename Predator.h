@@ -15,6 +15,7 @@
 // ===========================================================================
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 
 
 
@@ -60,6 +61,7 @@ class Predator: public Agent
     // =======================================================================
     double getRp();
     bool getattack();
+    int getpreyPos();
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
@@ -74,6 +76,7 @@ class Predator: public Agent
 
     void move(Agent* ag, int nbPop, double vmax);
     void hunting(Agent* ag);
+    //void newPosition();
 
     // =======================================================================
     //                             Public Attributes
@@ -111,6 +114,7 @@ class Predator: public Agent
     double Rp;  //radius of percepcion
     double Re; //minimum radius to eat a prey
     bool attack;   //false if the predator is not hunting
+    bool stop;    // true if it is waiting because it ate a prey
     int preyPos;    // position of the prey the Predator is hunting
 };
 

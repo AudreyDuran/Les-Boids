@@ -18,7 +18,7 @@ int main()
     Agent test2 = Agent(0,1, 1,1,100,100,1, false);
     printf("x=%lf y=%lf vx=%lf \n", test2.getx(), test2.gety(), test2.getVx());
 
-    Agent test3 = Agent(5,5,1,0,100,100,1, false);
+    Agent test3 = Agent(5,5,2,0,100,100,1, false);
 
 
     // Test for Population's default constructor
@@ -107,7 +107,8 @@ int main()
     printf("\n\nPOPULATION : constructor with a given size\n\n");
 
     //100, 5, 1, 50, 1, 640, 480, 
-    Population hirondelles(100, 5, 1, 60, 1, 640, 480, 0.01, 1, 0.4, 40);
+    //(nbPrey, nbObs, nbPredator, radiusP, re, w, h, g1, g2, g3, g4)
+    Population hirondelles(100, 5, 2, 60, 5, 640, 480, 0.01, 1, 0.4, 40);
     hirondelles.print();
     for (int i = 0; i < hirondelles.getNbPop(); ++i)
     {
