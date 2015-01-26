@@ -47,8 +47,8 @@ class Agent
     //                               Constructors
     // =======================================================================
     Agent(void);
-    Agent(double W, double H);
-    Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt);
+    Agent(double W, double H, bool obstacle);
+    Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt, bool obstacle);
 
     // =======================================================================
     //                                Destructor
@@ -63,9 +63,12 @@ class Agent
     double gety();  // get the position y of the Agent
     double getVx(); // get the velocity on the x line of the Agent
     double getVy(); // get the velocity on the y line of the Agent
+    double getNextX();
+    double getNextY();
     double getNextvx(); // get the next velocity on the x line of the Agent
     double getNextvy(); // get the next velocity on the y line of the Agent
     double getDT();
+    bool getisObstacle();
     void print(); //print informations about the Agent (attributes)
    
 
@@ -97,7 +100,14 @@ class Agent
     double* v1(Agent* ag, int nbPop);
     double* v2(Agent* ag, int nbPop);
     double* v3(Agent* ag, int nbPop); 
+    double* v4(Agent* pop, int nbPop, double rp);
     bool isClosedTo(Agent ag, double distance);
+
+    double norm(Agent ag);
+    double* diffPos(Agent ag);
+    double* diffSpeed(Agent ag);
+
+    double random(int min, int vmax);
     
     
     // =======================================================================
@@ -135,7 +145,7 @@ class Agent
     static const double R; // radius of perception
     static const double c; //contact distance
 
-    
+    bool isObstacle;
 
     double x;  // position of the Agent on the x line
     double y;  // position of the Agent on the y line

@@ -21,6 +21,7 @@
 
 
 
+
 //############################################################################
 //                                                                           #
 //                           Class Template_class                            #
@@ -32,11 +33,9 @@
 // ===========================================================================
 
 
-/*const double Agent::XMAX = 640;
-const double Agent::YMAX = 480;*/
 
-const double Agent::R = 2;
-const double Agent::c = 0.5;
+const double Agent::R = 70;
+const double Agent::c = 30;
 
 // ===========================================================================
 //                                  Constructors
@@ -58,47 +57,77 @@ Agent::Agent(void)
 	nextVx = 0;
 	nextVy = 0;
 
-	DT = 1;
+	DT = 0.1;
+
+	isObstacle = false;   // we create prey by default 
 
 }
 
 /* create an Agent with a random positon and a null velocity */
-Agent::Agent(double W, double H)
+Agent::Agent(double W, double H, bool obstacle)
 {
+	isObstacle = obstacle;
 
 	x = (double)(rand()/(double)RAND_MAX)*W;
 	y = (double)(rand()/(double)RAND_MAX)*H;
 
-	vx = 1;
-	vy = 1;
-
 	nextX = x;
 	nextY = y;
 
-	nextVx = 1;
-	nextVy = 1;
+	if(obstacle == false)
+	{
+		vx = 1;
+		vy = 1;
 
-	DT = 1;
+		nextVx = 1;
+		nextVy = 1;
+
+	}
+	else
+	{	
+		vx = 0;
+		vy = 0;
+
+		nextVx = 0;
+		nextVy = 0;
+	}
+	
+	DT = 0.1;
 
 }
 
 /*create an Agent with a given position and a given velocity*/
-Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt)
+Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H, double dt, bool obstacle)
 {
+
+	isObstacle = obstacle;
+
 	x = X;
 	y = Y;
-
-	vx = Vx;
-	vy = Vy;
 
 	nextX = X;
 	nextY = Y;
 
-	nextVx = Vx;
-	nextVy = Vy;
+
+	if(obstacle == false)
+	{
+		vx = Vx;
+		vy = Vy;
+
+		nextVx = Vx;
+		nextVy = Vy;
+
+	}
+	else
+	{	
+		vx = 0;
+		vy = 0;
+
+		nextVx = 0;
+		nextVy = 0;
+	}
 
 	DT = dt;
-
 }
 
 
@@ -143,6 +172,16 @@ double Agent::getVy()
 	return vy;
 }
 
+double Agent::getNextX()
+{
+	return nextX;
+}
+
+double Agent::getNextY()
+{
+	return nextY;
+}
+
 
 // get the next velocity on the x line of the Agent
  double Agent::getNextvx()
@@ -159,6 +198,11 @@ double Agent::getNextvy()
 double Agent::getDT()
 {
 	return DT;
+}
+
+bool Agent::getisObstacle()
+{
+	return isObstacle;
 }
 
 //-----------------------------------------------------------------------------
@@ -194,7 +238,7 @@ void Agent::setNextvy(double v)
 }
 
 //----------------------------------------------------------------------------
-//                                nextPosition
+//                                newPosition
 //----------------------------------------------------------------------------
 
 
@@ -207,43 +251,126 @@ void Agent::newPosition()
 	y = nextY;
 	
 	double nx = x + DT * vx;
-	printf("nx=%lf\n",nx );
 	double ny = y + DT * vy;
-	printf("ny=%lf\n",ny );
 
-
-	if((nx<640) && (ny<480))
+	//we look at the x position
+	if((40<nx) && (nx<600))
 	{
-		nextX = 42;
-		nextY = ny;
-		printf("1ère boucle\n");
+		nextX = nx;
 	}
 
-	else if(ny<480)
+	else if(nx<40)
 	{
-		nextX = x + DT * (-vx);
-		nextY = y + DT * vy;
-		printf("2ème boucle\n");
-
-	}
-
-	else if(nx<640)
-	{
-		nextY = y + DT * (-vy);
+		//vx= vx + 10;
+		nextVx=vx + 5;
 		nextX = x + DT * vx;
-		printf("3ème boucle\n");
+	}
+	else if(nx>600)
+	{
+		//vx= vx - 10;
+		nextVx=vx - 5;
+		nextX = x + DT * vx;
+	}
+
+
+	//we look at the y position
+ 	if((40<ny) && (ny<440))
+	{
+		nextY = ny;
+	}
+
+	else if(ny<40)
+	{
+		//vy= vy + 10;
+		nextVy=vy + 5;
+		nextY = y + DT * vy;
+	}
+	else if(ny>440)
+	{
+		//vy= vy - 10;
+		nextVy=vy - 5;
+		nextY = y + DT * vy;
+	}
+/*
+
+	if((10<nx) && (nx<630))
+	{
+		nextX = nx;
 	}
 
 	else
 	{
-		nextX = x + DT * (-vx);
-		nextY = y + DT * (-vy);
-		printf("4ème boucle\n");
+		vx=-vx;
+		nextVx=vx;
+		nextX = x + DT * vx;
 	}
-	
+
+    if((10<ny)&&(ny<470))
+	{
+		nextY = ny;
+	}
+
+	else
+	{
+		vy=-vy;
+		nextVy=vy;
+		nextY = y + DT * vy;
+	}
+*/
+}
+
+//---------------------------------------------------------------------------
+//                                 random
+//---------------------------------------------------------------------------
+
+double Agent::random(int min, int max)
+{
+	double r = 0;
+	r = (double)(rand()/(double)RAND_MAX)*(max-min) + min;
+
+	return r;
 
 }
 
+//---------------------------------------------------------------------------
+//                                  norm
+//---------------------------------------------------------------------------
+
+double Agent::norm(Agent ag)
+{
+	double norm = 0;
+	norm = sqrt((x-ag.getx())* (x-ag.getx()) +(y-ag.gety())*(y-ag.gety()));
+
+	return norm;
+
+}
+
+//---------------------------------------------------------------------------
+//                                diffPos
+//---------------------------------------------------------------------------
+
+double* Agent::diffPos(Agent ag)
+{
+	double* diffPos = new double[2];
+
+	diffPos[0] = (ag.getx()-x);
+	diffPos[1] = (ag.gety()-y);
+
+	return diffPos;
+}
+//---------------------------------------------------------------------------
+//                                diffSpeed
+//---------------------------------------------------------------------------
+
+
+double* Agent::diffSpeed(Agent ag)
+{
+	double* diffSpeed= 0;
+	diffSpeed[0] = (ag.getVx()-vx);
+	diffSpeed[1] = (ag.getVy()-vy);
+
+	return diffSpeed;
+}
 
 //---------------------------------------------------------------------------
 //                              isCloserThan
@@ -255,7 +382,9 @@ bool Agent::isClosedTo(Agent ag, double distance)
 	bool close = false;
 	double norm = 0; //distance between the two agents
 
-	norm = sqrt((x-ag.getx())* (x-ag.getx()) +(y-ag.gety())*(y-ag.gety()) );
+	norm = this->norm(ag);
+
+	//norm = sqrt((x-ag.getx())* (x-ag.getx()) +(y-ag.gety())*(y-ag.gety()) );
 	
 	if( norm < distance && norm !=0)   //we check it's not the same Agent
 	{
@@ -263,7 +392,6 @@ bool Agent::isClosedTo(Agent ag, double distance)
 
 	}
 	
-
 	return close;
 }
 
@@ -273,7 +401,7 @@ bool Agent::isClosedTo(Agent ag, double distance)
 
 double* Agent::v1(Agent* ag, int nbPop)
 {
-	printf("\nDébut du calcul de v1 pour cet Agent\n");
+	//printf("\nDébut du calcul de v1 pour cet Agent\n");
 	
 	double* v1 = new double[2];
 	v1[0] = 0;
@@ -283,15 +411,17 @@ double* Agent::v1(Agent* ag, int nbPop)
 
 	for(int i=0; i<nbPop; i++)
 	{
-		if(this->isClosedTo(ag[i],R) == true)
+		if(ag[i].getisObstacle() == false)
 		{
+			if(this->isClosedTo(ag[i],R) == true)
+			{
 			K = K + 1;
-			printf("K=%d i=%d\n",K,i);
 
 			v1 [0] = v1[0] + ag[i].getVx() - this->getVx();
 			v1 [1] = v1[1] + ag[i].getVy() - this->getVy();
 
-		}
+			}
+		}		
 	}
 	
 	if(K!=0)
@@ -300,10 +430,6 @@ double* Agent::v1(Agent* ag, int nbPop)
 	    v1[1] = (double)1/K * (double)v1[1];
 
 	}
-
-	printf("fin : v1[0]= %lf v1[1]=%lf\n",v1[0],v1[1]);
-
-	printf("Fin du calcul de v1 pour cet Agent\n\n");
 	
 	return v1;
 }
@@ -314,7 +440,6 @@ double* Agent::v1(Agent* ag, int nbPop)
 
 double* Agent::v2(Agent* ag, int nbPop)
 {
-	printf("\nDébut du calcul de v2 pour cet Agent\n");
 	
 	double* v2 = new double[2];
 
@@ -325,15 +450,20 @@ double* Agent::v2(Agent* ag, int nbPop)
 
 	for(int i=0; i<nbPop; i++)
 	{
-		if(this->isClosedTo(ag[i],R) == true)
+		if(ag[i].getisObstacle() == false)
 		{
-			K = K + 1;
-				printf("K=%d i=%d\n",K,i);
+			if(this->isClosedTo(ag[i],R) == true)
+			{
+				K = K + 1;
+				
 
-			v2 [0] = v2[0] + ag[i].getx() - this->getx();
-			v2 [1] = v2[1] + ag[i].gety() - this->gety();
+				v2 [0] = v2[0] + ag[i].getx() - this->getx();
+				v2 [1] = v2[1] + ag[i].gety() - this->gety();
+
+			}
 
 		}
+		
 	}
 	
 	if(K!=0)
@@ -343,9 +473,9 @@ double* Agent::v2(Agent* ag, int nbPop)
 	}
 	
 
-	printf("fin : v2[0]= %lf v2[1]=%lf\n",v2[0],v2[1]);
+	//printf("fin : v2[0]= %lf v2[1]=%lf\n",v2[0],v2[1]);
 
-	printf("Fin du calcul de v2 pour cet Agent\n\n");
+	//printf("Fin du calcul de v2 pour cet Agent\n\n");
 	
 
 	return v2;
@@ -358,26 +488,48 @@ double* Agent::v2(Agent* ag, int nbPop)
 
 double* Agent::v3(Agent* ag, int nbPop)
 {
-	printf("\nDébut du calcul de v3 pour cet Agent\n");
+	//printf("\nDébut du calcul de v3 pour cet Agent\n");
 
 	double* v3 = new double[2];
+	double* v3inter = new double[2];   // on créé une vitesse intermediaire pour la partie droite de l'expression de la vitesse
 
 	int K2 = 0;  //number of Agents closed to the considerated Agent
 	int O = 0;  //number of obstacles closed to the considerated Agent
 
 	//first we calculate the first part of the expression of v3
-	for(int i=0; i<nbPop; i++)
+
+	if (isObstacle == false)   // we check the Agent of the function is not an obstacle
 	{
-		if(this->isClosedTo(ag[i],c) == true)
+		for(int i=0; i<nbPop; i++)
 		{
-			K2 = K2 + 1;
-		    printf("K2=%d i=%d\n",K2,i);
+			
+			if(ag[i].getisObstacle() == false)     //we check that the Agent is not an obstacle
+			{
+				if(this->isClosedTo(ag[i],c) == true)
+				{
+				K2 = K2 + 1;
 
-			v3 [0] = v3[0] + ag[i].getx() - this->getx();
-			v3 [1] = v3[1] + ag[i].gety() - this->gety();
+				v3 [0] = v3[0] + ag[i].getx() - this->getx();
+				v3 [1] = v3[1] + ag[i].gety() - this->gety();
 
+				}
+
+			}
+
+			else // if it is an obstacle
+			{
+				if(this->isClosedTo(ag[i],c) == true)  
+				{
+				O = O + 1;
+
+				v3inter[0] = v3inter[0] + ag[i].getx() - this->getx();
+				v3inter[1] = v3inter[1] + ag[i].gety() - this->gety();
+				}
+			}
+	
 		}
 	}
+	
 
 	if(K2!=0)
 	{
@@ -386,17 +538,56 @@ double* Agent::v3(Agent* ag, int nbPop)
 
 	}
 	
+	if(O!=0)
+	{
+	    v3[0] = v3[0]+(double)1/O * (double)v3inter[0] * (-1);
+	    v3[1] = v3[1]+(double)1/O * (double)v3inter[1] * (-1);	
+	}
 
-	printf("v3[0] = %lf v3[1]=%lf\n",v3[0],v3[1]);
-
-   //now we can focus on the second part of the expression of v3
-
-	printf("Fin du calcul de v3 pour cet Agent\n\n");
+	//printf("Fin du calcul de v3 pour cet Agent\n\n");
 
 	return v3;
 
 }
 	
+//the Agent is positionning himself in fonction of the Predators
+//-----------------------------------------------------------------------------
+//                                      v4
+//-----------------------------------------------------------------------------
+
+// prey.v4() : pop=predator 
+double* Agent::v4(Agent* pop, int nbPop, double rp)
+{
+
+	double* v4 = new double[2];
+	int K=0;
+
+	if(isObstacle == false)  // we check that we don't call this fonction with an obstacle
+	{
+		for(int i=0; i<nbPop; i++)
+		{
+		
+			if(this->isClosedTo(pop[i], rp) == true && pop[i].getisObstacle() == false) 
+			{
+			v4[0]= v4[0] + (pop[i].getx()-x)/this->norm(pop[i]);
+			v4[1]= v4[1] + (pop[i].gety()-y)/this->norm(pop[i]);
+
+			K = K+1;
+			}
+		}
+		
+	}
+
+	if(K!=0)
+	{
+		v4[0] = -1 * v4[0];
+		v4[1] = -1 * v4[1];
+	}
+
+	//printf("K %d\n",K );
+
+	return v4;
+}
 
 //----------------------------------------------------------------------------
 //                                  print

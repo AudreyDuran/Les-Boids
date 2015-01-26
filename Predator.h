@@ -6,8 +6,8 @@
 
 
 
-#ifndef __POPULATION_H__
-#define __POPULATION_H__
+#ifndef __PREDATOR_H__
+#define __PREDATOR_H__
 
 
 // ===========================================================================
@@ -23,8 +23,6 @@
 // ===========================================================================
 
 #include "Agent.h"
-#include "bwindow.h"
-#include "Predator.h"
 
 
 // ===========================================================================
@@ -36,7 +34,7 @@
 
 
 
-class Population
+class Predator: public Agent 
 {
   public :
     
@@ -47,23 +45,21 @@ class Population
     // =======================================================================
     //                               Constructors
     // =======================================================================
-    Population(void);
-    Population(double w, double h, double g1, double g2, double g3, double g4);
-    Population(int nbPrey, int nbObs, int nbPredator, double radiusP, double re, double w, double h, double g1, double g2, double g3, double g4);
+    Predator(void);
+    Predator(int W, int H, double rp, double re);
+    Predator(int X, int Y, int W, int H, double rp, double re);
+
 
     // =======================================================================
     //                                Destructor
     // =======================================================================
-    virtual ~Population(void);
+    virtual ~Predator(void);
 
     // =======================================================================
     //                            Accessors: getters
     // =======================================================================
-
-    int getNbPop();
-    Agent* getAg();
-    Agent* getAg(int pos);
-
+    double getRp();
+    bool getattack();
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
@@ -76,10 +72,8 @@ class Population
     //                              Public Methods
     // =======================================================================
 
-    void add(Agent a);
-    void run();
-    void speed();    // calculate the new velocity and set vx, vy, nextVx, nextVy
-    void print();    //print informations about the Population (nbPop, MAX_POP, vx and vy of the Agent..)
+    void move(Agent* ag, int nbPop, double vmax);
+    void hunting(Agent* ag);
 
     // =======================================================================
     //                             Public Attributes
@@ -94,12 +88,12 @@ class Population
     // =======================================================================
     //                            Forbidden Constructors
     // =======================================================================
-    /*Population(void)
+    /*Template_class(void)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
     };*/
-    Population(const Population &model)
+    Predator(const Predator &model)
     {
       printf("%s:%d: error: call to forbidden constructor.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
@@ -114,24 +108,10 @@ class Population
     //                             Protected Attributes
     // =======================================================================
 
-    static const size_t MAX_POP;
-    Agent* ag;   // table wich contains the Agents
-    int nbPop;
-
-    Predator* pr;
-    int nbPred;
-    
-
-    double W;   // weight of the window
-    double H;   // height of the window
-
-    
-
-    double G1;  // gamma 1 
-    double G2;  // gamma 2
-    double G3;  // gamma 3
-    double G4;  // gamma 4
-
+    double Rp;  //radius of percepcion
+    double Re; //minimum radius to eat a prey
+    bool attack;   //false if the predator is not hunting
+    int preyPos;    // position of the prey the Predator is hunting
 };
 
 
@@ -152,5 +132,5 @@ class Population
 // ===========================================================================
 
 
-#endif // __POPULATION_H__
+#endif // __PREDATOR_H__
 
