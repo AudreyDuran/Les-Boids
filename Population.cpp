@@ -182,16 +182,19 @@ void Population::speed()
 		}
 	}
 
+
 	// we actualize the speed of the Predator
+
+	//we browse the table of Predator
 	for(int i=0; i<nbPred; i++)
 	{
-		//printf("Predator dans speed : vx=%lf vy=%lf\n", pr[i].getVx(), pr[i].getVy());
 		// vx and vy
 		pr[i].setVx(pr[i].getNextvx());
 		pr[i].setVy(pr[i].getNextvy());
 
 		double norm = sqrt(pr[i].getVx()*pr[i].getVx()+pr[i].getVy()*pr[i].getVy());
 
+		//if the speed is higher than the max when he is not attacking, we reduce it
 		if(pr[i].getattack() == false && norm>5)
  		{
  			double max = norm/5;
@@ -199,6 +202,8 @@ void Population::speed()
  			pr[i].setVy((pr[i].getVy())/max);
 
  		}
+
+ 		//if the speed is too much high and the predator is hunting we reduce it but less than the case before
  		else if(norm>10)
  		{
  			double max = norm/5;
@@ -215,19 +220,8 @@ void Population::speed()
 		//pr[i].setNextvy(pr[i].getVy() + DT * -(1) *pr[i].v4(ag, nbPop, Rp)[1]);
 
 		//we actualize nextvx and nextvy
-		printf("ATTACK = %d\n", pr[i].getattack() );
-		//if(pr[i].getattack() == false)
-		//{
-			pr[i].move(ag, nbPop,50);
-			//pr[i].setNextvx(pr[i].getVx() + DT *pr[i].move(ag, nbPop, 20)[0]);
-			//pr[i].setNextvy(pr[i].getVy() + DT *pr[i].move(ag, nbPop, 20)[1]);
-		
-		//}
-
-		/*else
-		{
-			pr[i].hunting(ag);
-		}*/
+	
+		pr[i].move(ag, nbPop,50);
 
 		
 
@@ -287,7 +281,7 @@ void Population::run()
 			{
 				win.draw_fsquare(ag[i].getx(),ag[i].gety(),ag[i].getx() + 7, ag[i].gety() + 7, 0x960018);
 			}
-			else
+			else if(ag[i].getalive() == true)
 			{
     			// we draw the Prey
 				win.draw_fsquare(ag[i].getx(),ag[i].gety(),ag[i].getx() + 3 ,ag[i].gety() + 3,0xE73E01);
@@ -305,23 +299,27 @@ void Population::run()
 		// we browse the table of Predator
 		for(int i=0; i<nbPred; i++)
 		{ 
-			//we print the Predator
+			int preyPos = pr[i].getpreyPos();
+
+			//we draw the Predator
 			win.draw_fsquare(pr[i].getx(),pr[i].gety(),pr[i].getx() + 10 ,pr[i].gety() + 10,0x26C4EC);	
 
-			if(pr[i].getpreyPos()!=-1)
+			if(pr[i].getpreyPos()!=-1 && ag[preyPos].getalive() == true) // we draw the Agent alive followed by the Predator
 			{
-				win.draw_fsquare(ag[pr[i].getpreyPos()].getx(),ag[pr[i].getpreyPos()].gety(),ag[pr[i].getpreyPos()].getx() + 8 ,ag[pr[i].getpreyPos()].gety() + 8,0xCDCD0D);
+				win.draw_fsquare(ag[preyPos].getx(),ag[preyPos].gety(),ag[preyPos].getx() + 8 ,ag[preyPos].gety() + 8,0xCDCD0D);
 			}
 			
 			//we update his position (with the wind)
 			pr[i].newPosition();
-			//if(pr[i].isClosedTo())
 		}
+
+		char* text = new char[200];
+
+		//sprintf(text, "Le terrible pred a mange %d proies", pr[0].getpreyEaten());
+		win.draw_text(10, 15,0x000010,"Le terrible predateur a mange proies", strlen("Le terrible predateur a mange proies"));
 		//we update the speed of all the Population (Prey and Predator)
 	   	this->speed();
 
-		//sleep() tps en s
-		//usleep() tps en ms
  	}
     
 		

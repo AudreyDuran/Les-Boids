@@ -88,10 +88,10 @@ int main()
     Agent test6 = Agent(640,480, false);
     Agent test7 = Agent(640,480, false);
 
-    popu.add(test5);
+    /*popu.add(test5);
     popu.add(test6);
-    popu.add(test7);
-
+    popu.add(test7);*/
+    printf("add\n");
     popu.print();
 
     for(int i =0; i<popu.getNbPop();i++)
@@ -108,7 +108,7 @@ int main()
 
     //100, 5, 1, 50, 1, 640, 480, 
     //(nbPrey, nbObs, nbPredator, radiusP, re, w, h, g1, g2, g3, g4)
-    Population hirondelles(100, 5, 2, 60, 5, 640, 480, 0.01, 1, 0.4, 40);
+    Population hirondelles(100, 5, 1, 80, 5, 640, 480, 0.01, 1, 0.4, 20);
     hirondelles.print();
     for (int i = 0; i < hirondelles.getNbPop(); ++i)
     {

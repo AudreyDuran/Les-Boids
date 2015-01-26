@@ -60,6 +60,7 @@ Agent::Agent(void)
 	DT = 0.1;
 
 	isObstacle = false;   // we create prey by default 
+	alive = true;
 
 }
 
@@ -67,6 +68,7 @@ Agent::Agent(void)
 Agent::Agent(double W, double H, bool obstacle)
 {
 	isObstacle = obstacle;
+	alive = true;
 
 	x = (double)(rand()/(double)RAND_MAX)*W;
 	y = (double)(rand()/(double)RAND_MAX)*H;
@@ -101,6 +103,7 @@ Agent::Agent(double X, double Y, double Vx, double Vy,double W, double H, double
 {
 
 	isObstacle = obstacle;
+	alive = true;
 
 	x = X;
 	y = Y;
@@ -205,6 +208,11 @@ bool Agent::getisObstacle()
 	return isObstacle;
 }
 
+bool Agent::getalive()
+{
+	return alive;
+}
+
 //-----------------------------------------------------------------------------
 //                                  Setters
 //-----------------------------------------------------------------------------
@@ -235,6 +243,11 @@ void Agent::setNextvx(double v)
 void Agent::setNextvy(double v)
 {
 	nextVy = v;
+}
+
+void Agent::setAlive(bool b)
+{
+	alive = b;
 }
 
 //----------------------------------------------------------------------------
@@ -411,7 +424,7 @@ double* Agent::v1(Agent* ag, int nbPop)
 
 	for(int i=0; i<nbPop; i++)
 	{
-		if(ag[i].getisObstacle() == false)
+		if(ag[i].getisObstacle() == false && ag[i].getalive() == true)
 		{
 			if(this->isClosedTo(ag[i],R) == true)
 			{
@@ -450,7 +463,7 @@ double* Agent::v2(Agent* ag, int nbPop)
 
 	for(int i=0; i<nbPop; i++)
 	{
-		if(ag[i].getisObstacle() == false)
+		if(ag[i].getisObstacle() == false && ag[i].getalive() == true)
 		{
 			if(this->isClosedTo(ag[i],R) == true)
 			{
@@ -503,7 +516,7 @@ double* Agent::v3(Agent* ag, int nbPop)
 		for(int i=0; i<nbPop; i++)
 		{
 			
-			if(ag[i].getisObstacle() == false)     //we check that the Agent is not an obstacle
+			if(ag[i].getisObstacle() == false && ag[i].getalive() == true)     //we check that the Agent is not an obstacle and not dead
 			{
 				if(this->isClosedTo(ag[i],c) == true)
 				{

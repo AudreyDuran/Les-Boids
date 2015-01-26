@@ -55,7 +55,8 @@ Predator::Predator(void)
 
 	isObstacle = false;
     attack = false;
-    stop = false;
+    digestion = 0;
+    preyEaten = 0;
 
     preyPos = -1;
 }
@@ -79,8 +80,9 @@ Predator::Predator(int W, int H, double rp, double re)
 
 	isObstacle = false; 
     attack = false;
-    stop = false;
+    digestion = 0;
     preyPos = -1;
+    preyEaten = 0;
 
 	Rp = rp;
 	Re = re;
@@ -106,8 +108,9 @@ Predator::Predator(int X, int Y, int W, int H, double rp, double re)
 
     isObstacle = false; 
     attack = false;
-    stop = false;
+    digestion = 0;
     preyPos = -1;
+    preyEaten = 0;
 
     Rp = rp;
     Re = re;
@@ -140,6 +143,12 @@ bool Predator::getattack()
 int Predator::getpreyPos()
 {
     return preyPos;
+}
+
+int Predator::getpreyEaten()
+{
+    return preyEaten;
+
 }
 
 //----------------------------------------------------------------------------
@@ -216,19 +225,21 @@ void Predator::newPosition()
 
 void Predator::move(Agent* ag, int nbPop, double vmax)
 {
-    double* v = new double[2];
-    double closest = 810; //it's the max distance possible between the predator and the Agent
-    int position = 0; // position of the closest 
-    int K = 0;
 
-    //if the Preadator is not already hunting
-    //if(attack == false)
-    //{
-        //we look if there is an Agent in his radius of perception
+    //if the Predator is not digesting after he ate a prey
+    if(digestion == 0)
+    {
+        printf("Rentre dans boucle digestion == 0\n");
+        double* v = new double[2];
+        double closest = 810; //it's the max distance possible between the predator and the Agent
+        int position = 0; // position of the closest 
+        int K = 0;
+
+         //we look if there is an Agent in his radius of perception
         for(int i=0; i<nbPop; i++)
         {
 
-            if(ag[i].getisObstacle() == false) // we check it's not an obstacle
+            if(ag[i].getisObstacle() == false && ag[i].getalive() == true) // we check it's not an obstacle and that he is alive
             {
                 if(this->isClosedTo(ag[i],Rp) == true && this->norm(ag[i]) < closest)  //if it is in Rp and the closest Agent we actualize
                 {
@@ -239,7 +250,7 @@ void Predator::move(Agent* ag, int nbPop, double vmax)
             }  
         } 
 
-    printf("K=%d\n",K );
+        printf("K=%d\n",K );
 
         if(K == 0)  // if there is no Agent is the radius of perception
         {
@@ -255,9 +266,9 @@ void Predator::move(Agent* ag, int nbPop, double vmax)
             nextVy = vy + v[1];
         }
 
-        else
+        else // if there is at least an Agent in his radius of perception 
         {
-            printf("attack\n");
+            printf("commence attaque alors que cherchait proie\n");
             attack = true;
             preyPos = position;
 
@@ -265,6 +276,14 @@ void Predator::move(Agent* ag, int nbPop, double vmax)
             //nextVx = vx;
             //nextVy = vy;
         }
+
+
+    }
+    else 
+    {
+        hunting(ag);
+    }
+    
 
        /* else  //if there are agent in the radius of percepcion now
         {
@@ -297,38 +316,66 @@ void Predator::hunting(Agent* ag)
 {
     if(attack == true)
     {   
-        printf("norme %lf\n", this->norm(ag[preyPos]));
+
+        // if the Predator is not close enough to eat the prey
         if(this->norm(ag[preyPos]) > Re)
         {
-            printf("Re%lf\n",Re );
-            printf("ag[preyPos]= %d\n", preyPos);
-            nextVx = -((x - ag[preyPos].getx()))*7/(this->norm(ag[preyPos]));
-            nextVy = -((y - ag[preyPos].gety()))*7/(this->norm(ag[preyPos]));
+            nextVx = -((x - ag[preyPos].getx()))*10/(this->norm(ag[preyPos]));
+            nextVy = -((y - ag[preyPos].gety()))*10/(this->norm(ag[preyPos]));
 
-            printf("nextVx = %lf nextVy = %lf\n", nextVx, nextVy );
 
         }
 
+        // if the Predator can eat the prey
         else
         {
-            time_t* clock = new time_t();
-            time(clock);
+            //time_t* clock = new time_t();
+            //time(clock);
             
+            attack = false;
+            digestion = digestion + 1;
+            preyEaten = preyEaten + 1;
 
             nextVx = 0;
             nextVy = 0;
 
             ag[preyPos].setNextvx(0);
             ag[preyPos].setNextvy(0);
-
-          
-
+            ag[preyPos].setAlive(false);
         }
-        
-
 
     }
+    else
+    {
+        this->digest();
+    }
+}
 
+
+void Predator::digest()
+{
+    if(attack == false)
+    {
+        if(digestion <400)
+        {
+            digestion = digestion +1;
+            nextVx = 0;
+            nextVy = 0;
+            printf("DISGESTION GOING ON\n");
+            printf("vx = %lf vy=%lf\n",vx,vy );
+        }
+
+        else if(digestion == 400)
+        {
+            digestion = 0;
+            printf("End of digestion -------------------\n");
+
+            vx = 1;
+            vy = 1;
+            printf("nextvx = %lf nextVy=%lf\n",vx,vy );
+
+        }
+    }
 
 }
 

@@ -62,6 +62,7 @@ class Predator: public Agent
     double getRp();
     bool getattack();
     int getpreyPos();
+    int getpreyEaten();
     // =======================================================================
     //                            Accessors: setters
     // =======================================================================
@@ -76,7 +77,7 @@ class Predator: public Agent
 
     void move(Agent* ag, int nbPop, double vmax);
     void hunting(Agent* ag);
-    //void newPosition();
+    void digest();
 
     // =======================================================================
     //                             Public Attributes
@@ -114,8 +115,10 @@ class Predator: public Agent
     double Rp;  //radius of percepcion
     double Re; //minimum radius to eat a prey
     bool attack;   //false if the predator is not hunting
-    bool stop;    // true if it is waiting because it ate a prey
+    int digestion;    // true if it is waiting because it ate a prey
     int preyPos;    // position of the prey the Predator is hunting
+
+    int preyEaten;
 };
 
 

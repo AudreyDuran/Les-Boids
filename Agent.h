@@ -69,7 +69,8 @@ class Agent
     double getNextvy(); // get the next velocity on the y line of the Agent
     double getDT();
     bool getisObstacle();
-    void print(); //print informations about the Agent (attributes)
+    bool getalive();
+    
    
 
     // =======================================================================
@@ -81,6 +82,7 @@ class Agent
     void setVy(double v);
     void setNextvx(double v);
     void setNextvy(double v);
+    void setAlive(bool b);
 
     // =======================================================================
     //                                Operators
@@ -108,6 +110,8 @@ class Agent
     double* diffSpeed(Agent ag);
 
     double random(int min, int vmax);
+
+    void print(); //print informations about the Agent (attributes)
     
     
     // =======================================================================
@@ -146,6 +150,7 @@ class Agent
     static const double c; //contact distance
 
     bool isObstacle;
+    bool alive;    // true if alive
 
     double x;  // position of the Agent on the x line
     double y;  // position of the Agent on the y line
